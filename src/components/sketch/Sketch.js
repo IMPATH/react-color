@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import reactCSS from 'reactcss'
 import merge from 'lodash/merge'
@@ -7,8 +7,20 @@ import { ColorWrap, Saturation, Hue, Alpha, Checkboard } from '../common'
 import SketchFields from './SketchFields'
 import SketchPresetColors from './SketchPresetColors'
 
-export const Sketch = ({ width, rgb, hex, hsv, hsl, onChange, onSwatchHover,
+export const Sketch = ({ width, rgb, hex, hsv, hsl, onChange , onSwatchHover,
   disableAlpha, presetColors, renderers, styles: passedStyles = {}, className = '' }) => {
+
+  const [colors, setColors] = useState(presetColors)
+  // 初回ロード時にプリセットカラーを設定
+  useEffect(() => {
+    const savedColors = localStorage.getItem('presetColors')
+    if (savedColors) {
+      setColors(JSON.parse(savedColors))
+    } else {
+      localStorage.setItem('presetColors', JSON.stringify(colors))
+    }
+  }, [])
+
   const styles = reactCSS(merge({
     'default': {
       picker: {
@@ -100,6 +112,13 @@ export const Sketch = ({ width, rgb, hex, hsv, hsl, onChange, onSwatchHover,
     },
   }, passedStyles), { disableAlpha })
 
+  const onAddNewColor = () => {
+    const currentColor = hex // 現在の色
+    const updatedColors = [...colors, currentColor]
+    setColors(updatedColors)
+    localStorage.setItem('presetColors', JSON.stringify(updatedColors))
+  }
+
   return (
     <div style={ styles.picker } className={ `sketch-picker ${ className }` }>
       <div style={ styles.saturation }>
@@ -143,9 +162,10 @@ export const Sketch = ({ width, rgb, hex, hsv, hsl, onChange, onSwatchHover,
         disableAlpha={ disableAlpha }
       />
       <SketchPresetColors
-        colors={ presetColors }
+        colors={ colors }
         onClick={ onChange }
         onSwatchHover={ onSwatchHover }
+        onAddNewColor={onAddNewColor}
       />
     </div>
   )
@@ -161,7 +181,10 @@ Sketch.defaultProps = {
   disableAlpha: false,
   width: 200,
   styles: {},
-  presetColors: [],
+  presetColors: [
+    '#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505',
+    '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000',
+    '#4A4A4A', '#9B9B9B', '#FFFFFF'],
 }
 
 export default ColorWrap(Sketch)
