@@ -70,6 +70,21 @@ export const Sketch = ({ width, rgb, hex, hsv, hsl, onChange, onSwatchHover,
         radius: '2px',
         shadow: 'inset 0 0 0 1px rgba(0,0,0,.15), inset 0 0 4px rgba(0,0,0,.25)',
       },
+      addButton: {
+        width: '16px',
+        height: '16px',
+        background: '#f0f0f0',
+        borderRadius: '4px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        boxShadow: '0 0 0 1px rgba(0,0,0,.15)',
+      },
+      addButtonText: {
+        fontSize: '16px',
+        color: '#666',
+      },
       ...passedStyles,
     },
     'disableAlpha': {
@@ -146,9 +161,7 @@ Sketch.defaultProps = {
   disableAlpha: false,
   width: 200,
   styles: {},
-  presetColors: ['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505',
-    '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000',
-    '#4A4A4A', '#9B9B9B', '#FFFFFF'],
+  presetColors: [],
 }
 
 export default ColorWrap(Sketch)

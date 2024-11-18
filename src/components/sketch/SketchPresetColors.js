@@ -4,7 +4,7 @@ import reactCSS from 'reactcss'
 
 import { Swatch } from '../common'
 
-export const SketchPresetColors = ({ colors, onClick = () => {}, onSwatchHover }) => {
+export const SketchPresetColors = ({ colors, onClick = () => {}, onSwatchHover, onAddNewColor = () => {} } ) => {
   const styles = reactCSS({
     'default': {
       colors: {
@@ -24,14 +24,23 @@ export const SketchPresetColors = ({ colors, onClick = () => {}, onSwatchHover }
         borderRadius: '3px',
         boxShadow: 'inset 0 0 0 1px rgba(0,0,0,.15)',
       },
-    },
-    'no-presets': {
-      colors: {
-        display: 'none',
+      addButtonWrap: {
+        width: '16px',
+        height: '16px',
+        margin: '0 10px 10px 0',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#f0f0f0',
+        borderRadius: '3px',
+        boxShadow: 'inset 0 0 0 1px rgba(0,0,0,.15)',
+        cursor: 'pointer',
+      },
+      addButtonText: {
+        fontSize: '12px',
+        color: '#666',
       },
     },
-  }, {
-    'no-presets': !colors || !colors.length,
   })
 
   const handleClick = (hex, e) => {
@@ -62,6 +71,10 @@ export const SketchPresetColors = ({ colors, onClick = () => {}, onSwatchHover }
           </div>
         )
       }) }
+      {/* Add Button */}
+      <div style={ styles.addButtonWrap } onClick={ onAddNewColor }>
+        <span style={ styles.addButtonText }>+</span>
+      </div>
     </div>
   )
 }
@@ -74,6 +87,9 @@ SketchPresetColors.propTypes = {
       title: PropTypes.string,
     })],
   )).isRequired,
+  onClick: PropTypes.func,
+  onSwatchHover: PropTypes.func,
+  onAddNewColor: PropTypes.func, // 新しい色追加ボタンのクリックイベント
 }
 
 export default SketchPresetColors
